@@ -1,77 +1,155 @@
 "use client";
 
 import { useState } from "react";
-import { FiInfo } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Info,
+  User,
+  Briefcase,
+  Sparkles,
+  HelpCircle,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle,
+} from "lucide-react";
 
-const PERSONAS = [
+// ShadCN-inspired Tooltip
+function Tooltip({ text, children }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative inline-block">
+      <span
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+        tabIndex={0}
+        className="align-middle focus:outline-none"
+      >
+        {children}
+      </span>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.18 }}
+            className="absolute left-8 top-0 z-20 w-64 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 text-xs text-gray-700 dark:text-gray-200"
+            role="tooltip"
+          >
+            {text}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+const steps = [
   {
-    label: "👤 I’m a student",
+    label: "Background",
+    icon: <User className="w-5 h-5 mr-2 text-blue-600" />,
+    field: "background",
+    placeholder:
+      "E.g. I'm a final-year CS student passionate about building things.",
+    tooltip:
+      "Drop a quick intro — education, past roles, or anything that shaped your journey.",
+    type: "textarea",
+    example: "I’m a Full Stack Developer with 2 years of freelance experience.",
+  },
+  {
+    label: "Skillset",
+    icon: <Sparkles className="w-5 h-5 mr-2 text-green-600" />,
+    field: "skills",
+    placeholder: "E.g. TypeScript, React, Tailwind, Git, Teamwork",
+    tooltip:
+      "List both tech and soft skills — anything you're confident putting on a resume or flexing in a project.",
+    type: "input",
+    example: "JavaScript, UI/UX, Team collaboration, API integration",
+  },
+  {
+    label: "YInterests",
+    icon: <Briefcase className="w-5 h-5 mr-2 text-purple-600" />,
+    field: "interests",
+    placeholder:
+      "E.g. Building AI tools, automating workflows, clean UI design",
+    tooltip:
+      "What gets you hyped? Could be domains (like AI) or even hobbies that influence your goals.",
+    type: "input",
+    example: "AI Agents, Web Dev, Productivity Tools",
+  },
+  {
+    label: "Question",
+    icon: <HelpCircle className="w-5 h-5 mr-2 text-orange-600" />,
+    field: "question",
+    placeholder: "E.g. What’s the fastest route into frontend dev in 2025?",
+    tooltip:
+      "Ask what's *really* on your mind — career, skills, salary, trends, anything.",
+    type: "textarea",
+    example: "What tech career suits someone with design + coding skills?",
+  },
+];
+
+const personas = [
+  {
+    label: "Student",
+    icon: <User className="w-4 h-4 mr-1" />,
     values: {
-      background: "I'm a university student majoring in psychology.",
-      skills: "Research, teamwork, communication",
-      interests: "Tech, mental health, AI",
-      question: "What tech careers fit my background and interests?",
+      background:
+        "I'm a recent CS grad passionate about building cool things on the web.",
+      skills: "HTML, CSS, JavaScript, React, Python, Git",
+      interests: "AI Agents, Frontend Engineering, Side Projects",
+      question:
+        "What career paths can help me grow into a frontend engineer or AI tool builder?",
     },
   },
   {
-    label: "👩‍💼 Working in non-tech",
+    label: "Non-Tech Pro ",
+    icon: <Briefcase className="w-4 h-4 mr-1" />,
     values: {
-      background: "I've worked in retail management for 5 years.",
-      skills: "Leadership, sales, customer service",
-      interests: "Tech, project management",
-      question: "How can I transition into a tech project manager role?",
+      background:
+        "I’ve led retail teams for 5 years and excel at operations and people management.",
+      skills: "Leadership, team coordination, sales strategy",
+      interests: "Agile, Product Management, Tech Transitioning",
+      question:
+        "How can I pivot into a tech-focused project or product manager role?",
     },
   },
   {
-    label: "🔄 Switching careers",
+    label: "Career Switcher",
+    icon: <Sparkles className="w-4 h-4 mr-1" />,
     values: {
-      background: "I used to work in sales but now I'm interested in tech.",
-      skills: "Negotiation, presentation, Excel",
-      interests: "Software development, startups",
-      question: "What entry-level tech jobs are a good fit for me?",
+      background:
+        "My background is in B2B sales, but I'm now learning to code.",
+      skills: "Negotiation, CRM tools, basic JavaScript & SQL",
+      interests: "SaaS, Web Dev, Tech Startups",
+      question:
+        "What beginner-friendly tech roles can help me transition into software development?",
     },
   },
   {
-    label: "🧓 Returning to work",
+    label: "Career Returner",
+    icon: <CheckCircle className="w-4 h-4 mr-1" />,
     values: {
-      background: "I took a career break to raise my family.",
-      skills: "Organization, multitasking, budgeting",
-      interests: "Remote work, flexible jobs",
-      question: "What flexible careers are available for someone returning to work?",
+      background:
+        "I paused my career for a few years to take care of family, now I’m ready for a comeback.",
+      skills: "Time management, budgeting, scheduling, soft skills",
+      interests: "Remote tech jobs, flexible hours, online learning",
+      question:
+        "Which remote tech careers are best for someone returning to the workforce?",
     },
   },
 ];
 
-function InfoTooltip({ text, link }) {
-  const [show, setShow] = useState(false);
-  return (
-    <span className="relative ml-1">
-      <button
-        type="button"
-        aria-label="More info"
-        tabIndex={0}
-        className="text-blue-500 hover:text-blue-700 focus:outline-none align-middle"
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-        onFocus={() => setShow(true)}
-        onBlur={() => setShow(false)}
-      >
-        <FiInfo size={16} />
-      </button>
-      {show && (
-        <div className="absolute z-10 left-6 top-0 bg-white border rounded p-2 text-xs shadow w-56">
-          {text}
-          {link && (
-            <div className="mt-1">
-              <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-                See examples
-              </a>
-            </div>
-          )}
-        </div>
-      )}
-    </span>
-  );
+function getPromptPreview(formData) {
+  const { background, skills, interests, question } = formData;
+  let context = "";
+  if (background) context += `My background: ${background}. `;
+  if (skills) context += `My skills include: ${skills}. `;
+  if (interests) context += `I'm interested in: ${interests}. `;
+  let enhancedQuestion = question || "What career paths should I explore?";
+  return `${context}\n\n${enhancedQuestion}`;
 }
 
 export default function PromptForm({ onSubmit }) {
@@ -81,190 +159,246 @@ export default function PromptForm({ onSubmit }) {
     interests: "",
     question: "",
   });
+  const [step, setStep] = useState(0);
   const [errors, setErrors] = useState({});
-  const [submitError, setSubmitError] = useState("");
+  const [showPreview, setShowPreview] = useState(true);
 
-  const [showPreview, setShowPreview] = useState(false);
+  // Validation
+  function validate(currentStep = step) {
+    const field = steps[currentStep].field;
+    if (!formData[field] || !formData[field].trim()) {
+      return { [field]: `${steps[currentStep].label} is required.` };
+    }
+    return {};
+  }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  // Step navigation
+  function nextStep() {
+    const validation = validate();
+    setErrors(validation);
+    if (Object.keys(validation).length === 0)
+      setStep((s) => Math.min(s + 1, steps.length - 1));
+  }
+  function prevStep() {
+    setErrors({});
+    setStep((s) => Math.max(s - 1, 0));
+  }
 
-  const handlePersona = (values) => {
+  // Persona quick-fill
+  function handlePersona(values) {
     setFormData(values);
-  };
+    setStep(0);
+    setErrors({});
+  }
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.background.trim()) newErrors.background = "Background is required.";
-    if (!formData.skills.trim()) newErrors.skills = "Skills are required.";
-    if (!formData.interests.trim()) newErrors.interests = "Interests are required.";
-    if (!formData.question.trim()) newErrors.question = "Please enter a question.";
-    return newErrors;
-  };
+  // Input change
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+  }
 
-  const handleSubmit = (e) => {
+  // Final submit
+  function handleSubmit(e) {
     e.preventDefault();
-    setSubmitError("");
-    const validationErrors = validate();
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length > 0) {
-      setSubmitError("Please fill in all required fields.");
-      return;
-    }
-    try {
+    let validation = {};
+    steps.forEach((s) => {
+      if (!formData[s.field] || !formData[s.field].trim()) {
+        validation[s.field] = `${s.label} is required.`;
+      }
+    });
+    setErrors(validation);
+    if (Object.keys(validation).length === 0) {
       onSubmit(formData);
-    } catch (err) {
-      setSubmitError("Something went wrong. Please try again.");
     }
-  };
-
-  function getPromptPreview() {
-    const { background, skills, interests, question } = formData;
-    let context = '';
-    if (background) context += `My background: ${background}. `;
-    if (skills) context += `My skills include: ${skills}. `;
-    if (interests) context += `I'm interested in: ${interests}. `;
-    let enhancedQuestion = question || "What career paths should I explore?";
-    return `${context}\n\n${enhancedQuestion}`;
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-      <h2 className="text-xl font-semibold mb-4">Tell us about yourself</h2>
+    <div className="max-w-xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-800 transition-colors">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Sparkles className="w-6 h-6 text-blue-600" />
+          JobStackr Career Wizard
+        </h2>
+        <button
+          onClick={() => setShowPreview((v) => !v)}
+          className="text-xs text-blue-600 hover:underline focus:outline-none"
+          aria-expanded={showPreview}
+        >
+          {showPreview ? "Hide" : "Show"} Prompt Preview
+        </button>
+      </div>
 
-      <div className="flex flex-wrap gap-2 mb-4" aria-label="Preset personas">
-        {PERSONAS.map((persona, idx) => (
+      {/* Persona Quick-Fill */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {personas.map((persona, idx) => (
           <button
             key={idx}
             type="button"
-            className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm hover:bg-blue-100 dark:hover:bg-blue-900 border"
+            className="flex items-center px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-900 border border-gray-200 dark:border-gray-700 transition"
             onClick={() => handlePersona(persona.values)}
             aria-label={`Use persona: ${persona.label}`}
           >
+            {persona.icon}
             {persona.label}
           </button>
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="background" className="block text-sm font-medium mb-1">
-            Your Background
-            <InfoTooltip text="Describe your education, work history, or life experience. E.g., 'I used to work in sales but now I'm interested in tech.'" />
-          </label>
-          <textarea
-            id="background"
-            name="background"
-            rows={2}
-            className={`w-full px-3 py-2 border rounded-md ${errors.background ? "border-red-500" : ""}`}
-            placeholder="Current role, years of experience..."
-            value={formData.background}
-            onChange={handleChange}
-            aria-label="Your background"
-          />
-          <p className="text-xs text-gray-500 italic mt-1">
-            Example: “I used to work in sales but now I'm interested in tech.”
-          </p>
-          {errors.background && <p className="text-xs text-red-600 mt-1">{errors.background}</p>}
+      {/* Stepper */}
+      <div className="flex items-center justify-between mb-8">
+        {steps.map((s, idx) => (
+          <div key={s.field} className="flex-1 flex flex-col items-center">
+            <div
+              className={`rounded-full border-2 w-8 h-8 flex items-center justify-center mb-1 transition-all
+                ${
+                  idx === step
+                    ? "border-blue-600 bg-blue-50 dark:bg-blue-900"
+                    : "border-gray-300 bg-gray-100 dark:bg-gray-800"
+                }
+                ${
+                  idx < step
+                    ? "border-green-500 bg-green-50 dark:bg-green-900"
+                    : ""
+                }
+              `}
+            >
+              {idx < step ? (
+                <CheckCircle className="w-5 h-5 text-green-500" />
+              ) : (
+                s.icon
+              )}
+            </div>
+            <span
+              className={`text-xs ${
+                idx === step ? "font-semibold text-blue-700" : "text-gray-500"
+              }`}
+            >
+              {s.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Animated Step Form */}
+      <form onSubmit={handleSubmit} autoComplete="off">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.25 }}
+            className="mb-6"
+          >
+            <label
+              htmlFor={steps[step].field}
+              className="block text-sm font-medium mb-2 flex items-center gap-1"
+            >
+              {steps[step].icon}
+              {steps[step].label}
+              <Tooltip text={steps[step].tooltip}>
+                <Info className="w-4 h-4 text-blue-400 hover:text-blue-600 cursor-pointer" />
+              </Tooltip>
+            </label>
+            {steps[step].type === "textarea" ? (
+              <textarea
+                id={steps[step].field}
+                name={steps[step].field}
+                rows={step === 0 ? 2 : 3}
+                className={`w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                  ${
+                    errors[steps[step].field]
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }
+                `}
+                placeholder={steps[step].placeholder}
+                value={formData[steps[step].field]}
+                onChange={handleChange}
+                aria-label={steps[step].label}
+              />
+            ) : (
+              <input
+                type="text"
+                id={steps[step].field}
+                name={steps[step].field}
+                className={`w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+                  ${
+                    errors[steps[step].field]
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }
+                `}
+                placeholder={steps[step].placeholder}
+                value={formData[steps[step].field]}
+                onChange={handleChange}
+                aria-label={steps[step].label}
+              />
+            )}
+            <div className="flex items-center mt-2 text-xs text-gray-500">
+              <span className="italic">Example: “{steps[step].example}”</span>
+              {errors[steps[step].field] && (
+                <span className="ml-3 text-red-600">
+                  {errors[steps[step].field]}
+                </span>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-between items-center gap-2">
+          <button
+            type="button"
+            onClick={prevStep}
+            disabled={step === 0}
+            className="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition disabled:opacity-50"
+          >
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            Back
+          </button>
+          {step < steps.length - 1 ? (
+            <button
+              type="button"
+              onClick={nextStep}
+              className="flex items-center px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow"
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="flex items-center px-6 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition shadow"
+            >
+              <CheckCircle className="w-4 h-4 mr-1" />
+              Generate Career Insights
+            </button>
+          )}
         </div>
-
-        <div>
-          <label htmlFor="skills" className="block text-sm font-medium mb-1">
-            Your Skills
-            <InfoTooltip
-              text="Skills = stuff you’re good at, like public speaking or Python."
-              link="https://www.careeronestop.org/Toolkit/Skills/skills-matcher.aspx"
-            />
-          </label>
-          <input
-            type="text"
-            id="skills"
-            name="skills"
-            className={`w-full px-3 py-2 border rounded-md ${errors.skills ? "border-red-500" : ""}`}
-            placeholder="React, Python, Project Management..."
-            value={formData.skills}
-            onChange={handleChange}
-            aria-label="Your skills"
-          />
-          <p className="text-xs text-gray-500 italic mt-1">
-            Example: “Negotiation, Excel, public speaking”
-          </p>
-          {errors.skills && <p className="text-xs text-red-600 mt-1">{errors.skills}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="interests" className="block text-sm font-medium mb-1">
-            Interests or Industries
-            <InfoTooltip text="What fields or topics excite you? E.g., AI, healthcare, sustainability." />
-          </label>
-          <input
-            type="text"
-            id="interests"
-            name="interests"
-            className={`w-full px-3 py-2 border rounded-md ${errors.interests ? "border-red-500" : ""}`}
-            placeholder="AI, Healthcare, Sustainability..."
-            value={formData.interests}
-            onChange={handleChange}
-            aria-label="Your interests"
-          />
-          <p className="text-xs text-gray-500 italic mt-1">
-            Example: “AI, healthcare, sustainability”
-          </p>
-          {errors.interests && <p className="text-xs text-red-600 mt-1">{errors.interests}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="question" className="block text-sm font-medium mb-1">
-            What do you want to know?
-            <InfoTooltip text="Ask anything! E.g., 'What career pivots are trending in 2025?'" />
-          </label>
-          <textarea
-            id="question"
-            name="question"
-            rows={3}
-            className={`w-full px-3 py-2 border rounded-md ${errors.question ? "border-red-500" : ""}`}
-            placeholder="E.g., What career paths should I explore? Compare AI vs Cybersecurity..."
-            value={formData.question}
-            onChange={handleChange}
-            aria-label="Your question"
-          />
-          <p className="text-xs text-gray-500 italic mt-1">
-            Example: “What entry-level tech jobs are a good fit for me?”
-          </p>
-          {errors.question && <p className="text-xs text-red-600 mt-1">{errors.question}</p>}
-        </div>
-
-        {submitError && (
-          <div className="text-red-600 text-sm mb-2">{submitError}</div>
-        )}
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
-        >
-          Generate Career Insights
-        </button>
       </form>
 
-      <div className="mt-4">
-        <button
-          type="button"
-          className="text-xs text-blue-600 underline"
-          onClick={() => setShowPreview((v) => !v)}
-          aria-expanded={showPreview}
-        >
-          {showPreview ? "Hide" : "Show"} prompt preview
-        </button>
+      {/* Live Prompt Preview */}
+      <AnimatePresence>
         {showPreview && (
-          <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-900 rounded text-sm text-gray-700 dark:text-gray-200 border">
-            <span className="font-semibold">Here’s what we’ll ask Perplexity for you:</span>
-            <br />
-            <span className="italic">{getPromptPreview()}</span>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.22 }}
+            className="mt-8 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-200 shadow-inner"
+          >
+            <span className="font-semibold flex items-center gap-1">
+              <Sparkles className="w-4 h-4 text-blue-500" />
+              Live Prompt Preview:
+            </span>
+            <pre className="mt-2 whitespace-pre-wrap font-mono text-xs text-gray-800 dark:text-gray-100">
+              {getPromptPreview(formData)}
+            </pre>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </div>
   );
 }

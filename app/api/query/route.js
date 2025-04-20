@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import { querySonar } from '@/lib/sonar';
 import { generatePrompt } from '@/utils/generatePrompt';
@@ -16,7 +15,8 @@ export async function POST(request) {
     // Process and return the response
     return NextResponse.json({
       text: response.text || response.answer,
-      citations: response.citations || []
+      citations: response.citations || [],
+      tool_outputs: response.tool_outputs || []
     });
   } catch (error) {
     console.error('Error processing query:', error);

@@ -1,38 +1,55 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import showdown from "showdown";
+import PerplexityResponse from './PerplexityResponse'; // Importing PerplexityResponse
+
+// Utility: Extract summary from text
+function extractSummary(text) {
+  if (!text) return "";
+  const dashIdx = text.indexOf("---");
+  if (dashIdx !== -1) return text.slice(0, dashIdx).trim();
+  const firstPara = text.split("\n").find((p) => p.trim());
+  return firstPara ? firstPara.trim() : text.slice(0, 300) + "...";
+}
+
+// Utility: Extract career paths from text
+function extractCareers(text) {
+  if (!text) return [];
+  const lines = text.split("\n");
+  const careers = [];
+  for (let line of lines) {
+    const match = line.match(/^\s*(?:\*\*)?\d+\.\s*(.+?)(?:\*\*|$)/);
+    if (match) {
+      careers.push(match[1].replace(/\*\*/g, "").trim());
+    }
+  }
+  return careers;
+}
 
 export default function ResponseCard({ response }) {
+  const [showFull, setShowFull] = useState(false);
   if (!response) return null;
-  
+
   const { text, citations } = response;
-  
+  const summary = extractSummary(text);
+  const careers = extractCareers(text);
+
+  // Convert markdown to HTML using showdown
+  const converter = new showdown.Converter({ tables: true, openLinksInNewWindow: true, simplifiedAutoLink: true });
+  const htmlText = text ? converter.makeHtml(text) : "";
+
+  // Utility to bold text before colon
+  function boldBeforeColon(str) {
+    if (!str) return "";
+    return str.replace(/(^|\n)([^:\n]+:)/g, '$1<strong>$2</strong>');
+  }
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-semibold mb-4">Career Insights</h2>
-      
-      <div className="prose dark:prose-invert max-w-none">
-        {text && (
-          <div className="mb-6" dangerouslySetInnerHTML={{ __html: text }} />
-        )}
-        
-        {citations && citations.length > 0 && (
-          <div className="mt-8">
-            <h3 className="text-lg font-medium mb-2">Sources</h3>
-            <ul className="list-disc pl-5 space-y-1">
-              {citations.map((citation, index) => (
-                <li key={index}>
-                  <a 
-                    href={citation.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline break-words"
-                  >
-                    {citation.title || citation.url}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </div>
+    <PerplexityResponse
+      text={text}
+      citations={citations}
+      toolOutputs={response.tool_outputs}
+    />
   );
 }

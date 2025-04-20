@@ -47,6 +47,17 @@ export default function Dashboard() {
       
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div className="md:col-span-4">
+          <PromptForm onSubmit={handleSubmit} />
+        </div>
+        
+        <div className="md:col-span-8">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader />
+            </div>
+          ) : response ? (
+            <ResponseCard response={response} />
+          ) : (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 h-64 flex items-center justify-center text-center">
               <p className="text-gray-500">
                 Fill out the form to get personalized career insights
