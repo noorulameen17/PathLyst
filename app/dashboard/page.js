@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import PromptForm from "@/components/promptForm";
-import ResponseCard from "@/components/ResponseCard";
-import Loader from "@/components/Loader";
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [apiError, setApiError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (formData) => {
     setIsLoading(true);
@@ -26,7 +26,11 @@ export default function Dashboard() {
         setApiError(data.error || "Something went wrong. Please try again.");
         setResponse(null);
       } else {
-        setResponse(data);
+        // Store result in sessionStorage and redirect
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("jobstackr_result", JSON.stringify(data));
+        }
+        router.push("/result");
       }
     } catch (error) {
       setApiError("Network error. Please try again.");
@@ -37,33 +41,18 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Career Planning Dashboard</h1>
-      {apiError && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-300">
-          {apiError}
-        </div>
-      )}
-      
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div className="md:col-span-4">
-          <PromptForm onSubmit={handleSubmit} />
-        </div>
-        
-        <div className="md:col-span-8">
-          {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <Loader />
-            </div>
-          ) : response ? (
-            <ResponseCard response={response} />
-          ) : (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 h-64 flex items-center justify-center text-center">
-              <p className="text-gray-500">
-                Fill out the form to get personalized career insights
-              </p>
-            </div>
-          )}
+    <main className="flex min-h-screen items-center justify-center px-4 py-8">
+      <div className="w-full max-w-4xl">
+        <h1 className="text-3xl font-bold mb-6 text-center">Career Planning Dashboard</h1>
+        {apiError && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-300 text-center">
+            {apiError}
+          </div>
+        )}
+        <div className="flex justify-center">
+          <div className="w-full max-w-xl">
+            <PromptForm onSubmit={handleSubmit} loading={isLoading} />
+          </div>
         </div>
       </div>
     </main>

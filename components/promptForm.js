@@ -12,6 +12,8 @@ import {
   ChevronRight,
   CheckCircle,
 } from "lucide-react";
+import { DotStream } from "ldrs/react";
+import "ldrs/react/DotStream.css";
 
 // ShadCN-inspired Tooltip
 function Tooltip({ text, children }) {
@@ -69,7 +71,7 @@ const steps = [
     example: "JavaScript, UI/UX, Team collaboration, API integration",
   },
   {
-    label: "YInterests",
+    label: "Interests",
     icon: <Briefcase className="w-5 h-5 mr-2 text-purple-600" />,
     field: "interests",
     placeholder:
@@ -101,7 +103,7 @@ const personas = [
       skills: "HTML, CSS, JavaScript, React, Python, Git",
       interests: "AI Agents, Frontend Engineering, Side Projects",
       question:
-        "What career paths can help me grow into a frontend engineer or AI tool builder?",
+        "What career paths can help me grow into a frontend engineer?",
     },
   },
   {
@@ -148,11 +150,14 @@ function getPromptPreview(formData) {
   if (background) context += `My background: ${background}. `;
   if (skills) context += `My skills include: ${skills}. `;
   if (interests) context += `I'm interested in: ${interests}. `;
-  let enhancedQuestion = question || "What career paths should I explore?";
-  return `${context}\n\n${enhancedQuestion}`;
+  // Only show question if user has typed it
+  if (question && question.trim()) {
+    return `${context}\n\n${question}`;
+  }
+  return context;
 }
 
-export default function PromptForm({ onSubmit }) {
+export default function PromptForm({ onSubmit, loading }) {
   const [formData, setFormData] = useState({
     background: "",
     skills: "",
@@ -176,8 +181,9 @@ export default function PromptForm({ onSubmit }) {
   function nextStep() {
     const validation = validate();
     setErrors(validation);
-    if (Object.keys(validation).length === 0)
+    if (Object.keys(validation).length === 0) {
       setStep((s) => Math.min(s + 1, steps.length - 1));
+    }
   }
   function prevStep() {
     setErrors({});
@@ -196,6 +202,17 @@ export default function PromptForm({ onSubmit }) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
+  }
+
+  // Prevent Enter key from submitting the form except on the last step
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Always prevent Enter from submitting
+      if (step < steps.length - 1) {
+        nextStep();
+      }
+      // On last step, do nothing (force explicit button click)
+    }
   }
 
   // Final submit
@@ -293,7 +310,7 @@ export default function PromptForm({ onSubmit }) {
           >
             <label
               htmlFor={steps[step].field}
-              className="block text-sm font-medium mb-2 flex items-center gap-1"
+              className="text-sm font-medium mb-2 flex items-center gap-1"
             >
               {steps[step].icon}
               {steps[step].label}
@@ -317,6 +334,7 @@ export default function PromptForm({ onSubmit }) {
                 value={formData[steps[step].field]}
                 onChange={handleChange}
                 aria-label={steps[step].label}
+                onKeyDown={handleKeyDown}
               />
             ) : (
               <input
@@ -334,6 +352,7 @@ export default function PromptForm({ onSubmit }) {
                 value={formData[steps[step].field]}
                 onChange={handleChange}
                 aria-label={steps[step].label}
+                onKeyDown={handleKeyDown}
               />
             )}
             <div className="flex items-center mt-2 text-xs text-gray-500">
@@ -347,36 +366,62 @@ export default function PromptForm({ onSubmit }) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center gap-2">
-          <button
-            type="button"
-            onClick={prevStep}
-            disabled={step === 0}
-            className="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition disabled:opacity-50"
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Back
-          </button>
-          {step < steps.length - 1 ? (
+        {/* 3D Navigation Buttons */}
+        <div className="button-container">
+          {step > 0 && (
             <button
               type="button"
-              onClick={nextStep}
-              className="flex items-center px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow"
+              className="button-3d"
+              onClick={prevStep}
+              disabled={loading}
+              aria-label="Back"
             >
-              Next
-              <ChevronRight className="w-4 h-4 ml-1" />
+              <div className="button-top">
+                <span className="material-icons">❮</span>
+              </div>
+              <div className="button-bottom"></div>
+              <div className="button-base"></div>
             </button>
-          ) : (
+          )}
+          {step < steps.length - 1 && (
             <button
-              type="submit"
-              className="flex items-center px-6 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition shadow"
+              type="button"
+              className="button-3d"
+              onClick={nextStep}
+              disabled={loading}
+              aria-label="Next"
             >
-              <CheckCircle className="w-4 h-4 mr-1" />
-              Generate Career Insights
+              <div className="button-top">
+                <span className="material-icons">❯</span>
+              </div>
+              <div className="button-bottom"></div>
+              <div className="button-base"></div>
             </button>
           )}
         </div>
+
+        {/* Separate Generate Button */}
+        {step === steps.length - 1 && (
+          <div className="flex justify-center mt-6">
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex items-center justify-center px-6 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition shadow disabled:opacity-50 min-w-[220px]"
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <DotStream size={28} speed={2.5} color="white" />
+                  Generating...
+                </span>
+              ) : (
+                <>
+                  <CheckCircle className="w-4 h-4 mr-1" />
+                  Generate Career Insights
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </form>
 
       {/* Live Prompt Preview */}
@@ -402,3 +447,4 @@ export default function PromptForm({ onSubmit }) {
     </div>
   );
 }
+
