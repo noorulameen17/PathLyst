@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import PerplexityResponse from "@/components/PerplexityResponse";
 import Loader from "@/components/Loader";
 
 export default function ResultPage() {
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -34,6 +36,13 @@ export default function ResultPage() {
 
   return (
     <div className="max-w-3xl mx-auto my-10">
+      {/* Back Button */}
+      <button
+        onClick={() => router.push("/dashboard")}
+        className="mb-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      >
+        ← Back
+      </button>
       <PerplexityResponse
         text={responseData.text}
         citations={responseData.citations}
