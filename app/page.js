@@ -16,8 +16,9 @@ import {
   CheckCircle2,
   Menu,
   X,
-  User,
 } from "lucide-react";
+import PerpIcon from "@/components/ui/perpicon";
+import Image from "next/image";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -279,8 +280,8 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col lg:flex-row items-center">
-            <div className="lg:w-1/2 mb-12 lg:mb-0">
+          <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-0">
+            <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start mb-12 lg:mb-0">
               <AnimatePresence>
                 {isVisible.hero && (
                   <>
@@ -288,7 +289,7 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight"
+                      className="text-3xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight text-center lg:text-left"
                     >
                       Career clarity meets{" "}
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
@@ -299,7 +300,7 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
-                      className="mt-6 text-xl text-slate-600 max-w-2xl"
+                      className="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl text-center lg:text-left"
                     >
                       Your personal career research assistant. Ask about any
                       career path and get comprehensive insights powered by
@@ -309,12 +310,12 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
-                      className="mt-8 flex flex-col sm:flex-row gap-4"
+                      className="mt-8 flex flex-col sm:flex-row gap-4 w-full justify-center lg:justify-start"
                     >
-                      <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center">
+                      <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center w-full sm:w-auto">
                         Get Started <ArrowRight className="ml-2 h-5 w-5" />
                       </button>
-                      <button className="border border-slate-300 hover:border-purple-600 text-slate-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors">
+                      <button className="border border-slate-300 hover:border-purple-600 text-slate-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors w-full sm:w-auto">
                         Learn More
                       </button>
                     </motion.div>
@@ -322,368 +323,47 @@ export default function LandingPage() {
                 )}
               </AnimatePresence>
             </div>
-            <div className="lg:w-1/2">
-              <AnimatePresence>
-                {isVisible.hero && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="relative"
-                  >
-                    {/* 3D Card with perspective effect */}
-                    <motion.div
-                      whileHover={{ rotateY: 5, rotateX: -5 }}
-                      transition={{ type: "spring", stiffness: 100 }}
-                      className="bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-2xl overflow-hidden border border-slate-200 transform perspective-1200"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      {/* Top Bar */}
-                      <div className="bg-slate-800 p-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <div className="text-white font-medium flex items-center">
-                          <Sparkles className="h-4 w-4 text-purple-400 mr-2" />
-                          JobStackr
-                        </div>
-                        <div className="w-16"></div>{" "}
-                        {/* Spacer for alignment */}
-                      </div>
-
-                      {/* Chat Interface */}
-                      <div className="p-6">
-                        {/* User Query */}
-                        <motion.div
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.5 }}
-                          className="mb-6"
-                        >
-                          <div className="flex items-start">
-                            <div className="bg-slate-200 rounded-full p-2 mr-3">
-                              <User className="h-5 w-5 text-slate-600" />
-                            </div>
-                            <div className="bg-slate-100 rounded-2xl p-4 shadow-sm max-w-[85%]">
-                              <p className="text-slate-800 font-medium">
-                                I'm interested in becoming a UX Designer. What
-                                should I know about this career?
-                              </p>
-                            </div>
-                          </div>
-                        </motion.div>
-
-                        {/* AI Response */}
-                        <motion.div
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.8 }}
-                        >
-                          <div className="flex items-start">
-                            <div className="bg-purple-600 rounded-full p-2 mr-3">
-                              <Sparkles className="h-5 w-5 text-white" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="bg-white rounded-2xl p-4 shadow-md border border-slate-100">
-                                <div className="flex items-center mb-3">
-                                  <div className="font-semibold text-slate-900">
-                                    JobStackr AI
-                                  </div>
-                                  <div className="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
-                                    Powered by Perplexity
-                                  </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                  {/* Introduction */}
-                                  <p className="text-slate-700">
-                                    Here's what you should know about becoming a
-                                    UX Designer:
-                                  </p>
-
-                                  {/* Feature Cards */}
-                                  <div className="relative">
-                                    {/* Active Feature Card */}
-                                    <AnimatePresence mode="wait">
-                                      {activeFeature === 0 && (
-                                        <motion.div
-                                          key="role"
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -10 }}
-                                          className="bg-gradient-to-br from-purple-50 to-indigo-50 p-4 rounded-xl border border-purple-100 shadow-sm"
-                                        >
-                                          <div className="flex items-center mb-2">
-                                            <div className="bg-purple-600 rounded-lg p-1.5 mr-2">
-                                              <Search className="h-4 w-4 text-white" />
-                                            </div>
-                                            <h4 className="font-semibold text-purple-900">
-                                              Role Description
-                                            </h4>
-                                          </div>
-                                          <p className="text-slate-700">
-                                            UX Designers create user-centered
-                                            digital products by understanding
-                                            user needs, designing intuitive
-                                            interfaces, and testing with real
-                                            users to improve usability.
-                                          </p>
-                                        </motion.div>
-                                      )}
-
-                                      {activeFeature === 1 && (
-                                        <motion.div
-                                          key="skills"
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -10 }}
-                                          className="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-xl border border-blue-100 shadow-sm"
-                                        >
-                                          <div className="flex items-center mb-2">
-                                            <div className="bg-blue-600 rounded-lg p-1.5 mr-2">
-                                              <CheckCircle2 className="h-4 w-4 text-white" />
-                                            </div>
-                                            <h4 className="font-semibold text-blue-900">
-                                              Required Skills
-                                            </h4>
-                                          </div>
-                                          <div className="flex flex-wrap gap-2">
-                                            {[
-                                              "Figma",
-                                              "User Research",
-                                              "Wireframing",
-                                              "Prototyping",
-                                              "UI Design",
-                                              "Empathy",
-                                            ].map((skill, i) => (
-                                              <span
-                                                key={i}
-                                                className="bg-white px-2 py-1 rounded-md text-sm border border-blue-100 text-blue-700"
-                                              >
-                                                {skill}
-                                              </span>
-                                            ))}
-                                          </div>
-                                        </motion.div>
-                                      )}
-
-                                      {activeFeature === 2 && (
-                                        <motion.div
-                                          key="salary"
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -10 }}
-                                          className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100 shadow-sm"
-                                        >
-                                          <div className="flex items-center mb-2">
-                                            <div className="bg-green-600 rounded-lg p-1.5 mr-2">
-                                              <BarChart3 className="h-4 w-4 text-white" />
-                                            </div>
-                                            <h4 className="font-semibold text-green-900">
-                                              Salary Insights
-                                            </h4>
-                                          </div>
-                                          <div className="space-y-2">
-                                            <div className="flex justify-between items-center">
-                                              <span className="text-slate-700">
-                                                Entry-level:
-                                              </span>
-                                              <span className="font-medium text-green-700">
-                                                $70-85K
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                              <span className="text-slate-700">
-                                                Mid-level:
-                                              </span>
-                                              <span className="font-medium text-green-700">
-                                                $85-110K
-                                              </span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                              <span className="text-slate-700">
-                                                Senior:
-                                              </span>
-                                              <span className="font-medium text-green-700">
-                                                $110-150K+
-                                              </span>
-                                            </div>
-                                          </div>
-                                        </motion.div>
-                                      )}
-
-                                      {activeFeature === 3 && (
-                                        <motion.div
-                                          key="start"
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -10 }}
-                                          className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-xl border border-amber-100 shadow-sm"
-                                        >
-                                          <div className="flex items-center mb-2">
-                                            <div className="bg-amber-600 rounded-lg p-1.5 mr-2">
-                                              <Rocket className="h-4 w-4 text-white" />
-                                            </div>
-                                            <h4 className="font-semibold text-amber-900">
-                                              Getting Started
-                                            </h4>
-                                          </div>
-                                          <ol className="list-decimal list-inside space-y-1 text-slate-700">
-                                            <li>
-                                              Learn design fundamentals &
-                                              principles
-                                            </li>
-                                            <li>
-                                              Master tools like Figma & Sketch
-                                            </li>
-                                            <li>
-                                              Build a portfolio with real
-                                              projects
-                                            </li>
-                                            <li>
-                                              Network with UX professionals
-                                            </li>
-                                            <li>
-                                              Apply for internships or junior
-                                              roles
-                                            </li>
-                                          </ol>
-                                        </motion.div>
-                                      )}
-
-                                      {activeFeature === 4 && (
-                                        <motion.div
-                                          key="demand"
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -10 }}
-                                          className="bg-gradient-to-br from-indigo-50 to-violet-50 p-4 rounded-xl border border-indigo-100 shadow-sm"
-                                        >
-                                          <div className="flex items-center mb-2">
-                                            <div className="bg-indigo-600 rounded-lg p-1.5 mr-2">
-                                              <BarChart3 className="h-4 w-4 text-white" />
-                                            </div>
-                                            <h4 className="font-semibold text-indigo-900">
-                                              Future Demand
-                                            </h4>
-                                          </div>
-                                          <div className="space-y-2">
-                                            <div className="w-full bg-white rounded-full h-2.5">
-                                              <div className="bg-indigo-600 h-2.5 rounded-full w-[80%]"></div>
-                                            </div>
-                                            <p className="text-slate-700">
-                                              Growing at 8% annually with strong
-                                              demand in tech, healthcare, and
-                                              financial services.
-                                            </p>
-                                          </div>
-                                        </motion.div>
-                                      )}
-
-                                      {activeFeature === 5 && (
-                                        <motion.div
-                                          key="resources"
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          exit={{ opacity: 0, y: -10 }}
-                                          className="bg-gradient-to-br from-rose-50 to-pink-50 p-4 rounded-xl border border-rose-100 shadow-sm"
-                                        >
-                                          <div className="flex items-center mb-2">
-                                            <div className="bg-rose-600 rounded-lg p-1.5 mr-2">
-                                              <BookOpen className="h-4 w-4 text-white" />
-                                            </div>
-                                            <h4 className="font-semibold text-rose-900">
-                                              Learning Resources
-                                            </h4>
-                                          </div>
-                                          <div className="space-y-2 text-slate-700">
-                                            <div className="flex items-center">
-                                              <CheckCircle2 className="h-4 w-4 text-rose-500 mr-2" />
-                                              <span>
-                                                Google UX Design Certificate
-                                              </span>
-                                            </div>
-                                            <div className="flex items-center">
-                                              <CheckCircle2 className="h-4 w-4 text-rose-500 mr-2" />
-                                              <span>
-                                                Interaction Design Foundation
-                                              </span>
-                                            </div>
-                                            <div className="flex items-center">
-                                              <CheckCircle2 className="h-4 w-4 text-rose-500 mr-2" />
-                                              <span>
-                                                Nielsen Norman Group Resources
-                                              </span>
-                                            </div>
-                                          </div>
-                                        </motion.div>
-                                      )}
-                                    </AnimatePresence>
-                                  </div>
-
-                                  {/* Navigation Dots */}
-                                  <div className="flex justify-center space-x-2 pt-2">
-                                    {features.map((feature, index) => (
-                                      <button
-                                        key={index}
-                                        onClick={() => setActiveFeature(index)}
-                                        className={`w-8 h-1.5 rounded-full transition-colors ${
-                                          activeFeature === index
-                                            ? "bg-purple-600"
-                                            : "bg-slate-200 hover:bg-slate-300"
-                                        }`}
-                                        aria-label={`View ${feature.title}`}
-                                      ></button>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Floating Elements */}
-                              <motion.div
-                                animate={{
-                                  y: [0, -8, 0],
-                                  rotate: [0, 5, 0],
-                                }}
-                                transition={{
-                                  repeat: Number.POSITIVE_INFINITY,
-                                  duration: 5,
-                                  ease: "easeInOut",
-                                }}
-                                className="absolute -top-6 -right-4 bg-blue-500 text-white p-2 rounded-lg shadow-lg transform rotate-12 z-10"
-                              >
-                                <GraduationCap className="h-5 w-5" />
-                              </motion.div>
-
-                              <motion.div
-                                animate={{
-                                  y: [0, 10, 0],
-                                  rotate: [0, -8, 0],
-                                }}
-                                transition={{
-                                  repeat: Number.POSITIVE_INFINITY,
-                                  duration: 6,
-                                  ease: "easeInOut",
-                                  delay: 0.5,
-                                }}
-                                className="absolute -bottom-4 -left-4 bg-purple-500 text-white p-2 rounded-lg shadow-lg transform -rotate-12 z-10"
-                              >
-                                <Rocket className="h-5 w-5" />
-                              </motion.div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
-                    </motion.div>
-
-                    {/* Background Decorations */}
-                    <div className="absolute -bottom-10 -right-10 -z-10 w-64 h-64 bg-gradient-to-br from-purple-600/20 to-indigo-600/20 rounded-full blur-3xl"></div>
-                    <div className="absolute -top-10 -left-10 -z-10 w-64 h-64 bg-gradient-to-br from-purple-600/10 to-indigo-600/10 rounded-full blur-3xl"></div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center min-h-[260px] relative">
+              {/* Main image */}
+              <div className="relative w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] mx-auto">
+                <Image
+                  src="/sonar.svg"
+                  color="black"
+                  fill
+                  alt="sonar"
+                  className="object-contain"
+                  sizes="(max-width: 640px) 220px, 300px"
+                />
+              </div>
+              {/* Logo row: always below image, never overlay */}
+              <div className="flex items-center gap-2 sm:gap-4 mt-4">
+                className="
+                  flex items-center gap-2 sm:gap-4 mt-4
+                  lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/3 lg:mt-0
+                "
+              >
+                <div className="w-14 h-14 sm:w-[90px] sm:h-[90px] relative">
+                  <Image
+                    src="/perplexity.svg"
+                    fill
+                    alt="perplexity"
+                    className="object-contain"
+                    sizes="(max-width: 640px) 56px, 90px"
+                  />
+                </div>
+                <div className="p-1 translate-x-1">
+                  <X className="w-8 h-8 text-black stroke-[3]" />
+                </div>
+                <div className="w-14 h-14 sm:w-[90px] sm:h-[90px] relative">
+                  <Image
+                    src="/perp logo.png"
+                    fill
+                    alt="perp logo"
+                    className="object-contain"
+                    sizes="(max-width: 640px) 56px, 90px"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1000,20 +680,20 @@ export default function LandingPage() {
                   <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center">
                     Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
                   </button>
-                  <button className="border border-slate-300 hover:border-purple-600 text-slate-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors">
-                    See Demo
-                  </button>
                 </div>
-                <div className="mt-8 text-sm text-slate-500">
-                  <p>Powered by Perplexity Sonar — Smarter Career Choices</p>
+                <div className="mt-8 text-sm text-slate-500 flex items-center justify-center">
+                  <Image
+                    src="/sonar.svg"
+                    width={300}
+                    height={300}
+                    alt="sonar"
+                  ></Image>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </section>
-
-      
     </div>
   );
 }
