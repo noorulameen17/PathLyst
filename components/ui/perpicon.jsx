@@ -33,8 +33,8 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 142px;
-    height: 142px;
+    width: 180px;
+    height: 180px;
     color: #e5dede;
     font-weight: bold;
     text-decoration: none;
@@ -46,7 +46,7 @@ const StyledWrapper = styled.div`
 
   /* Styles for the first button */
   .button-1 {
-    background-color: #063525;
+    background-color: #000000;
     border: 3px solid #42c498;
     border-radius: 12px;
     box-shadow: 4px 4px 1px #000000;
