@@ -17,8 +17,11 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import PerpIcon from "@/components/ui/perpicon";
 import Image from "next/image";
+import { AuroraText } from "@/components/ui/aurora-text";
+import { ShimmerButton } from "@/components/ui/shimmer-button";
+import Link from "next/link";
+import { SignInButton, useAuth } from "@clerk/nextjs"; // Clerk imports
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,6 +34,8 @@ export default function LandingPage() {
     audience: false,
     cta: false,
   });
+
+  const { isSignedIn } = useAuth();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -280,7 +285,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-0">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-0">
             <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start mb-12 lg:mb-0">
               <AnimatePresence>
                 {isVisible.hero && (
@@ -289,18 +294,18 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="text-3xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight text-center lg:text-left"
+                      className="text-3xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight text-center lg:text-left font-['Nimbus_Sans'] flex flex-col"
                     >
-                      Career clarity meets{" "}
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
-                        AI power
+                      Career Clarity Meets
+                      <span>
+                        <AuroraText>AI POWER</AuroraText>
                       </span>
                     </motion.h1>
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
-                      className="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl text-center lg:text-left"
+                      className="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl text-center lg:text-left font-['Nimbus_Sans']"
                     >
                       Your personal career research assistant. Ask about any
                       career path and get comprehensive insights powered by
@@ -312,36 +317,37 @@ export default function LandingPage() {
                       transition={{ duration: 0.5, delay: 0.4 }}
                       className="mt-8 flex flex-col sm:flex-row gap-4 w-full justify-center lg:justify-start"
                     >
-                      <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center w-full sm:w-auto">
-                        Get Started <ArrowRight className="ml-2 h-5 w-5" />
-                      </button>
-                      <button className="border border-slate-300 hover:border-purple-600 text-slate-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors w-full sm:w-auto">
+                      {!isSignedIn && (
+                        <SignInButton mode="modal" redirectUrl="/InputForm">
+                          <ShimmerButton as="span">Get Started</ShimmerButton>
+                        </SignInButton>
+                      )}
+                      <ShimmerButton
+                        onClick={() => scrollToSection("features")}
+                      >
                         Learn More
-                      </button>
+                      </ShimmerButton>
                     </motion.div>
                   </>
                 )}
               </AnimatePresence>
             </div>
-            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center min-h-[260px] relative">
+            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center min-h-[260px] relative -mt-26">
               {/* Main image */}
-              <div className="relative w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] mx-auto">
-                <Image
-                  src="/sonar.svg"
-                  color="black"
-                  fill
-                  alt="sonar"
-                  className="object-contain"
-                  sizes="(max-width: 640px) 220px, 300px"
-                />
+              <div className="w-full flex flex-col items-center mb-2">
+                <div className="relative w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] mx-auto">
+                  <Image
+                    src="/sonar.svg"
+                    color="black"
+                    fill
+                    alt="sonar"
+                    className="object-contain"
+                    sizes="(max-width: 640px) 220px, 300px"
+                  />
+                </div>
               </div>
               {/* Logo row: always below image, never overlay */}
-              <div className="flex items-center gap-2 sm:gap-4 mt-4">
-                className="
-                  flex items-center gap-2 sm:gap-4 mt-4
-                  lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/3 lg:mt-0
-                "
-              >
+              <div className="flex items-center gap-2 sm:gap-4 -mt-22">
                 <div className="w-14 h-14 sm:w-[90px] sm:h-[90px] relative">
                   <Image
                     src="/perplexity.svg"
@@ -352,7 +358,7 @@ export default function LandingPage() {
                   />
                 </div>
                 <div className="p-1 translate-x-1">
-                  <X className="w-8 h-8 text-black stroke-[3]" />
+                  <X className="w-8 h-8 text-black stroke-[1]" />
                 </div>
                 <div className="w-14 h-14 sm:w-[90px] sm:h-[90px] relative">
                   <Image
@@ -677,9 +683,11 @@ export default function LandingPage() {
                   insights powered by Perplexity Sonar.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center">
-                    Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
-                  </button>
+                  <Link href="/promptForm.js">
+                    <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center">
+                      Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
+                    </button>
+                  </Link>
                 </div>
                 <div className="mt-8 text-sm text-slate-500 flex items-center justify-center">
                   <Image
