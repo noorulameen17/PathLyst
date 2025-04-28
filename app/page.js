@@ -21,7 +21,6 @@ import Image from "next/image";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import Link from "next/link";
-import { SignInButton, useAuth } from "@clerk/nextjs"; // Clerk imports
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,8 +33,6 @@ export default function LandingPage() {
     audience: false,
     cta: false,
   });
-
-  const { isSignedIn } = useAuth();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -317,11 +314,12 @@ export default function LandingPage() {
                       transition={{ duration: 0.5, delay: 0.4 }}
                       className="mt-8 flex flex-col sm:flex-row gap-4 w-full justify-center lg:justify-start"
                     >
-                      {!isSignedIn && (
-                        <SignInButton mode="modal" redirectUrl="/InputForm">
-                          <ShimmerButton as="span">Get Started</ShimmerButton>
-                        </SignInButton>
-                      )}
+                      <Link href="/InputForm">
+                        <ShimmerButton>
+                          Get Started
+                        </ShimmerButton>
+                      </Link>
+                      
                       <ShimmerButton
                         onClick={() => scrollToSection("features")}
                       >
@@ -343,6 +341,7 @@ export default function LandingPage() {
                     alt="sonar"
                     className="object-contain"
                     sizes="(max-width: 640px) 220px, 300px"
+                    priority
                   />
                 </div>
               </div>
