@@ -1,37 +1,32 @@
 "use client";;
-import styled, { keyframes } from 'styled-components';
+import React, { memo } from "react";
 
-const auroraAnimation = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-`;
+export const AuroraText = memo(({
+  children,
+  className = "",
+  colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"],
+  speed = 1
+}) => {
+  const gradientStyle = {
+    backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${
+      colors[0]
+    })`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    animationDuration: `${10 / speed}s`,
+  };
 
-const AuroraWrapper = styled.span`
-  background: linear-gradient(
-    45deg,
-    #ff3366,
-    #ff6b6b,
-    #4ecdc4,
-    #45b7d1,
-    #2caeba,
-    #a166ab,
-    #ff3366
+  return (
+    (<span className={`relative inline-block ${className}`}>
+      <span className="sr-only">{children}</span>
+      <span
+        className="relative animate-aurora bg-[length:200%_auto] bg-clip-text text-transparent"
+        style={gradientStyle}
+        aria-hidden="true">
+        {children}
+      </span>
+    </span>)
   );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: ${auroraAnimation} 5s ease infinite;
-  font-weight: bold;
-`;
+});
 
-export const AuroraText = ({ children }) => {
-  return <AuroraWrapper>{children}</AuroraWrapper>;
-};
+AuroraText.displayName = "AuroraText";
