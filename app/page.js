@@ -1,26 +1,34 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import HoverButton from "@/components/ui/Button/hover-button";
+import { MorphingText } from "@/components/ui/morphing-text";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Sparkles,
-  Search,
+  ArrowRight,
+  Award,
   BarChart3,
   BookOpen,
-  Rocket,
-  GraduationCap,
-  RefreshCw,
   Brain,
-  MessageSquare,
-  ArrowRight,
+  Briefcase,
   CheckCircle2,
+  Clock,
+  Compass,
+  GraduationCap,
+  Lightbulb,
   Menu,
+  RefreshCw,
+  Rocket,
+  Search,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Users,
   X,
+  Zap,
 } from "lucide-react";
-import Image from "next/image";
-import { AuroraText } from "@/components/ui/aurora-text";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,44 +75,38 @@ export default function LandingPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setIsMenuOpen(false); // close mobile menu if open
-  };
-
   const features = [
-    { title: "Role Description", icon: <Search className="w-5 h-5" /> },
+    { title: "Role Description", icon: <Briefcase className="w-5 h-5" /> },
     { title: "Required Skills", icon: <CheckCircle2 className="w-5 h-5" /> },
     { title: "Salary Insights", icon: <BarChart3 className="w-5 h-5" /> },
     { title: "Getting Started", icon: <Rocket className="w-5 h-5" /> },
-    { title: "Future Demand", icon: <BarChart3 className="w-5 h-5" /> },
+    { title: "Future Demand", icon: <TrendingUp className="w-5 h-5" /> },
     { title: "Learning Resources", icon: <BookOpen className="w-5 h-5" /> },
   ];
 
+  const texts = ["Smart", "Career", "Choices?"];
+
   const benefits = [
     {
-      icon: <Rocket className="w-6 h-6 text-purple-500" />,
+      icon: <Zap className="w-6 h-6 text-teal-500" />,
       title: "No more sifting through tabs",
       description:
         "Get everything you need to know about a career in one comprehensive response.",
     },
     {
-      icon: <BookOpen className="w-6 h-6 text-purple-500" />,
+      icon: <Target className="w-6 h-6 text-teal-500" />,
       title: "Personalized resources",
       description:
         "Discover tailored learning materials to help you level up your skills.",
     },
     {
-      icon: <Brain className="w-6 h-6 text-purple-500" />,
+      icon: <Brain className="w-6 h-6 text-teal-500" />,
       title: "AI that understands you",
       description:
         "Powered by Perplexity's Sonar-Pro model for smart, accurate career guidance.",
     },
     {
-      icon: <MessageSquare className="w-6 h-6 text-purple-500" />,
+      icon: <Lightbulb className="w-6 h-6 text-teal-500" />,
       title: "Simple, helpful, no B.S.",
       description:
         "Clear, straightforward advice without the fluff or corporate jargon.",
@@ -125,13 +127,13 @@ export default function LandingPage() {
         "Find out how your existing skills transfer to new industries.",
     },
     {
-      icon: <Search className="w-6 h-6 text-white" />,
+      icon: <Compass className="w-6 h-6 text-white" />,
       title: "Curious Minds",
       description:
         "Explore what's out there and discover exciting career possibilities.",
     },
     {
-      icon: <Rocket className="w-6 h-6 text-white" />,
+      icon: <Award className="w-6 h-6 text-white" />,
       title: "Decision Makers",
       description:
         "Make informed career moves based on real data and insights.",
@@ -139,64 +141,46 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
+      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-teal-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <Sparkles className="h-8 w-8 text-purple-600" />
-              <span className="ml-2 text-xl font-bold text-slate-900">
-                JobStackr
-              </span>
+              <img
+                src="./logo.svg"
+                alt="Sonar Logo"
+                className="h-42 w-auto mr-2"
+              />
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("features");
-                }}
-                className="text-slate-600 hover:text-purple-600 transition-colors"
+                href="#features"
+                className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors"
               >
                 Features
               </a>
               <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("how");
-                }}
-                className="text-slate-600 hover:text-purple-600 transition-colors"
+                href="#how"
+                className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors"
               >
                 How It Works
               </a>
               <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("benefits");
-                }}
-                className="text-slate-600 hover:text-purple-600 transition-colors"
+                href="#benefits"
+                className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors"
               >
                 Benefits
               </a>
               <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("audience");
-                }}
-                className="text-slate-600 hover:text-purple-600 transition-colors"
+                href="#audience"
+                className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors"
               >
                 Who It's For
               </a>
-              <button
-                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
-                onClick={() => scrollToSection("cta")}
-              >
+              <button className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors">
                 Get Started
               </button>
             </div>
@@ -205,7 +189,7 @@ export default function LandingPage() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-slate-600 hover:text-purple-600 transition-colors"
+                className="text-slate-600 hover:text-teal-600 transition-colors"
               >
                 {isMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -224,53 +208,38 @@ export default function LandingPage() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-b border-slate-200"
+              className="md:hidden bg-white border-b border-teal-100"
             >
               <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
                 <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("features");
-                  }}
-                  className="text-slate-600 hover:text-purple-600 transition-colors"
+                  href="#features"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-600 hover:text-teal-600 transition-colors"
                 >
                   Features
                 </a>
                 <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("how");
-                  }}
-                  className="text-slate-600 hover:text-purple-600 transition-colors"
+                  href="#how"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-600 hover:text-teal-600 transition-colors"
                 >
                   How It Works
                 </a>
                 <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("benefits");
-                  }}
-                  className="text-slate-600 hover:text-purple-600 transition-colors"
+                  href="#benefits"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-600 hover:text-teal-600 transition-colors"
                 >
                   Benefits
                 </a>
                 <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("audience");
-                  }}
-                  className="text-slate-600 hover:text-purple-600 transition-colors"
+                  href="#audience"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-600 hover:text-teal-600 transition-colors"
                 >
                   Who It's For
                 </a>
-                <button
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors w-full"
-                  onClick={() => scrollToSection("cta")}
-                >
+                <button className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors w-full">
                   Get Started
                 </button>
               </div>
@@ -282,27 +251,36 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-0">
-            <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start mb-12 lg:mb-0">
+          <div className="flex flex-col lg:flex-row items-center">
+            <div className="lg:w-1/2 mb-12 lg:mb-0">
               <AnimatePresence>
                 {isVisible.hero && (
                   <>
-                    <motion.h1
+                    <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="text-3xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight text-center lg:text-left font-['Nimbus_Sans'] flex flex-col"
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-sm font-medium mb-4"
                     >
-                      Career Clarity Meets
-                      <span>
-                        <AuroraText>AI POWER</AuroraText>
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      <span>AI-Powered Career Guidance</span>
+                    </motion.div>
+                    <motion.h1
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.1 }}
+                      className="text-4xl font-[FKDisplay] sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight"
+                    >
+                      Career Clarity Meets{" "}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-teal-700">
+                        AI Power
                       </span>
                     </motion.h1>
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
-                      className="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl text-center lg:text-left font-['Nimbus_Sans']"
+                      className="mt-6 text-xl text-slate-600 max-w-2xl"
                     >
                       Your personal career research assistant. Ask about any
                       career path and get comprehensive insights powered by
@@ -311,70 +289,52 @@ export default function LandingPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      className="mt-8 flex flex-col sm:flex-row gap-4 w-full justify-center lg:justify-start"
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      className="mt-8 flex flex-col sm:flex-row gap-4"
                     >
-                      <Link href="/InputForm">
-                        <ShimmerButton>
-                          Get Started
-                        </ShimmerButton>
-                      </Link>
-                      
-                      <ShimmerButton
-                        onClick={() => scrollToSection("features")}
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center shadow-lg shadow-teal-200"
+                      >
+                        Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="border-2 border-teal-300 hover:border-teal-500 text-teal-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors"
                       >
                         Learn More
-                      </ShimmerButton>
+                      </motion.button>
                     </motion.div>
                   </>
                 )}
               </AnimatePresence>
             </div>
-            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center min-h-[260px] relative -mt-26">
-              {/* Main image */}
-              <div className="w-full flex flex-col items-center mb-2">
-                <div className="relative w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] mx-auto">
-                  <Image
-                    src="/sonar.svg"
-                    color="black"
-                    fill
-                    alt="sonar"
-                    className="object-contain"
-                    sizes="(max-width: 640px) 220px, 300px"
-                    priority
-                  />
-                </div>
-              </div>
-              {/* Logo row: always below image, never overlay */}
-              <div className="flex items-center gap-2 sm:gap-4 -mt-22">
-                <div className="w-14 h-14 sm:w-[90px] sm:h-[90px] relative">
-                  <Image
-                    src="/perplexity.svg"
-                    fill
-                    alt="perplexity"
-                    className="object-contain"
-                    sizes="(max-width: 640px) 56px, 90px"
-                  />
-                </div>
-                <div className="p-1 translate-x-1">
-                  <X className="w-8 h-8 text-black stroke-[1]" />
-                </div>
-                <div className="w-14 h-14 sm:w-[90px] sm:h-[90px] relative">
-                  <Image
-                    src="/perp logo.png"
-                    fill
-                    alt="perp logo"
-                    className="object-contain"
-                    sizes="(max-width: 640px) 56px, 90px"
-                  />
-                </div>
+            <div className="lg:w-1/2 flex flex-col items-center">
+              <img
+                src="./sonar.svg"
+                alt="Sonar Logo"
+                className="w-68 h-auto mb-4"
+              />
+              <div className="flex items-center">
+                <img
+                  src="./perplexity.svg"
+                  alt="Perplexity Logo"
+                  className="w-24 h-auto"
+                />
+                <X className="h-6 w-6 text-slate-800 translate-x-1 mx-6" />
+                <img
+                  src="./perp logo.png"
+                  alt="Perplexity Logo"
+                  className="w-24 h-auto"
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="container mx-auto max-w-7xl">
           <AnimatePresence>
@@ -386,7 +346,11 @@ export default function LandingPage() {
                   transition={{ duration: 0.5 }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-sm font-medium mb-4">
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    <span>Comprehensive Career Insights</span>
+                  </div>
+                  <h2 className="text-3xl font-[FKDisplay] sm:text-4xl font-bold text-slate-900">
                     What JobStackr Does
                   </h2>
                   <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
@@ -407,12 +371,12 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.1 * index }}
-                      className="bg-slate-50 rounded-xl p-6 border border-slate-200 hover:shadow-md transition-shadow"
+                      className="bg-teal-50 rounded-xl p-6 border border-teal-200 hover:shadow-md transition-shadow"
                     >
-                      <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                        <div className="text-purple-600">{feature.icon}</div>
+                      <div className="bg-teal-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                        <div className="text-teal-600">{feature.icon}</div>
                       </div>
-                      <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                      <h3 className="text-xl font-[FKDisplay] font-semibold text-slate-900 mb-2">
                         {feature.title}
                       </h3>
                       <p className="text-slate-600">
@@ -441,7 +405,7 @@ export default function LandingPage() {
       {/* How It Works Section */}
       <section
         id="how"
-        className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white"
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-teal-50 to-white"
       >
         <div className="container mx-auto max-w-7xl">
           <AnimatePresence>
@@ -453,7 +417,11 @@ export default function LandingPage() {
                   transition={{ duration: 0.5 }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-sm font-medium mb-4">
+                    <Clock className="h-4 w-4 mr-2" />
+                    <span>Simple Process</span>
+                  </div>
+                  <h2 className="text-3xl font-[FKDisplay] sm:text-4xl font-bold text-slate-900">
                     How It Works
                   </h2>
                   <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
@@ -468,30 +436,36 @@ export default function LandingPage() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="grid grid-cols-1 lg:grid-cols-3 gap-8"
                 >
-                  <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                    <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center mb-4">
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-xl p-6 border border-teal-200 shadow-sm"
+                  >
+                    <div className="bg-teal-600 text-white rounded-full w-10 h-10 flex items-center justify-center mb-4">
                       1
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                    <h3 className="text-xl font-[FKDisplay] font-semibold text-slate-900 mb-2">
                       Ask About Any Career
                     </h3>
                     <p className="text-slate-600 mb-4">
                       Type in your career question, whether it's about a
                       specific role, industry, or career path.
                     </p>
-                    <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                    <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
                       <p className="text-slate-700 text-sm italic">
                         "What does a Data Scientist do and what skills do I
                         need?"
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                    <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center mb-4">
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-xl p-6 border border-teal-200 shadow-sm"
+                  >
+                    <div className="bg-teal-600 text-white rounded-full w-10 h-10 flex items-center justify-center mb-4">
                       2
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                    <h3 className="text-xl font-[FKDisplay] font-semibold text-slate-900 mb-2">
                       AI Processes Your Query
                     </h3>
                     <p className="text-slate-600 mb-4">
@@ -507,47 +481,50 @@ export default function LandingPage() {
                             duration: 3,
                             ease: "linear",
                           }}
-                          className="absolute inset-0 rounded-full border-t-2 border-purple-600"
+                          className="absolute inset-0 rounded-full border-t-2 border-teal-600"
                         ></motion.div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <Brain className="w-8 h-8 text-purple-600" />
+                          <Brain className="w-8 h-8 text-teal-600" />
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                    <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center mb-4">
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-xl p-6 border border-teal-200 shadow-sm"
+                  >
+                    <div className="bg-teal-600 text-white rounded-full w-10 h-10 flex items-center justify-center mb-4">
                       3
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                    <h3 className="text-xl font-[FKDisplay] font-semibold text-slate-900 mb-2">
                       Get Comprehensive Insights
                     </h3>
                     <p className="text-slate-600 mb-4">
                       Receive a detailed breakdown of the career, including role
                       description, skills, salary, and more.
                     </p>
-                    <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                    <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-teal-500 rounded-full"></div>
                         <p className="text-slate-700 text-sm">
                           Role Description
                         </p>
                       </div>
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-teal-600 rounded-full"></div>
                         <p className="text-slate-700 text-sm">
                           Required Skills
                         </p>
                       </div>
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-teal-700 rounded-full"></div>
                         <p className="text-slate-700 text-sm">
                           Salary Insights
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               </>
             )}
@@ -567,7 +544,11 @@ export default function LandingPage() {
                   transition={{ duration: 0.5 }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-sm font-medium mb-4">
+                    <Zap className="h-4 w-4 mr-2" />
+                    <span>Why Users Love Us</span>
+                  </div>
+                  <h2 className="text-3xl font-[FKDisplay] sm:text-4xl font-bold text-slate-900">
                     Why JobStackr Slaps
                   </h2>
                   <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
@@ -587,12 +568,15 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.1 * index }}
-                      className="bg-white rounded-xl p-6 border border-slate-200 shadow-md hover:shadow-lg transition-shadow"
+                      whileHover={{ scale: 1.02 }}
+                      className="bg-white rounded-xl p-6 border border-teal-200 shadow-md hover:shadow-lg transition-all"
                     >
                       <div className="flex items-start">
-                        <div className="mr-4">{benefit.icon}</div>
+                        <div className="bg-teal-100 rounded-full p-3 mr-4">
+                          <div className="text-teal-600">{benefit.icon}</div>
+                        </div>
                         <div>
-                          <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                          <h3 className="text-xl font-[FKDisplay] font-semibold text-slate-900 mb-2">
                             {benefit.title}
                           </h3>
                           <p className="text-slate-600">
@@ -612,7 +596,7 @@ export default function LandingPage() {
       {/* Audience Section */}
       <section
         id="audience"
-        className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-600 to-indigo-700 text-white"
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-teal-600 to-teal-800 text-black"
       >
         <div className="container mx-auto max-w-7xl">
           <AnimatePresence>
@@ -624,10 +608,14 @@ export default function LandingPage() {
                   transition={{ duration: 0.5 }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-3xl sm:text-4xl font-bold">
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-teal-500 text-white text-sm font-medium mb-4">
+                    <Users className="h-4 w-4 mr-2" />
+                    <span>Target Audience</span>
+                  </div>
+                  <h2 className="text-3xl text-white font-[FKDisplay] sm:text-4xl font-bold">
                     Perfect For
                   </h2>
-                  <p className="mt-4 text-xl text-purple-100 max-w-3xl mx-auto">
+                  <p className="mt-4 text-xl text-teal-100 max-w-3xl mx-auto">
                     JobStackr helps anyone looking to make informed career
                     decisions.
                   </p>
@@ -645,15 +633,16 @@ export default function LandingPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.1 * index }}
-                      className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-colors"
+                      whileHover={{ y: -5 }}
+                      className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
                     >
-                      <div className="bg-purple-500/50 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      <div className="bg-teal-500/50 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                         {audience.icon}
                       </div>
-                      <h3 className="text-xl font-semibold mb-2">
+                      <h3 className="text-xl font-[FKDisplay] text-white font-semibold mb-2">
                         {audience.title}
                       </h3>
-                      <p className="text-purple-100">{audience.description}</p>
+                      <p className="text-teal-100">{audience.description}</p>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -663,44 +652,191 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section id="cta" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="container mx-auto max-w-7xl">
+      {/* CTA Section as Footer */}
+      <footer
+        id="cta"
+        className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-slate-800"></div>
+        <BackgroundBeams className="z-0 absolute inset-0" />
+
+        {/* Rotating Star */}
+        <motion.div
+          className="absolute top-0 left-0 w-32 h-32 flex items-center justify-center pointer-events-none"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: 100,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
+        >
+          <img src="./Star1.svg" alt="Perplexity Logo" className="w-24 h-24" />
+        </motion.div>
+
+        {/* Rotating Star */}
+        <motion.div
+          className="absolute bottom-0 right-0 w-32 h-32 flex items-center justify-center pointer-events-none"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: -360 }}
+          transition={{
+            duration: 200,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
+        >
+          <img src="./Star1.svg" alt="Perplexity Logo" className="w-24 h-24" />
+        </motion.div>
+
+        <div className="container mx-auto max-w-7xl relative z-10">
           <AnimatePresence>
             {isVisible.cta && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-8 md:p-12 border border-slate-200 shadow-sm text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="relative"
               >
-                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-6">
-                  Ready to Make Smarter Career Choices?
-                </h2>
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-8">
-                  Stop guessing about your career path. Get clear, actionable
-                  insights powered by Perplexity Sonar.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link href="/promptForm.js">
-                    <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors flex items-center justify-center">
-                      Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
-                    </button>
-                  </Link>
-                </div>
-                <div className="mt-8 text-sm text-slate-500 flex items-center justify-center">
-                  <Image
-                    src="/sonar.svg"
-                    width={300}
-                    height={300}
-                    alt="sonar"
-                  ></Image>
+                {/* Decorative elements */}
+                <div className="bg-slate-800 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl">
+                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                    <div className="lg:col-span-3 text-left">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-teal-500 text-slate-50 text-sm font-medium mb-4">
+                          <Sparkles className="h-4 w-4 mr-2" />
+                          <span>AI-Powered Career Guidance</span>
+                        </div>
+                        <h2 className="text-3xl font-[FKDisplay] sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+                          <span className="text-blue-400">Ready</span> to Make
+                        </h2>
+                        <div className="flex justify-center mb-4 -translate-x-32 text-white">
+                          <MorphingText texts={texts} />
+                        </div>
+                        <p className="text-lg text-purple-100 mb-6 max-w-2xl">
+                          Stop guessing about your career path. Get clear,
+                          actionable insights powered by Perplexity Sonar that
+                          help you make confident decisions about your future.
+                        </p>
+
+                        <div className="space-y-4 mb-8">
+                          {[
+                            {
+                              icon: <Search className="h-5 w-5" />,
+                              text: "Discover ideal career paths based on your skills and interests",
+                            },
+                            {
+                              icon: <BarChart3 className="h-5 w-5" />,
+                              text: "Get accurate salary insights and market demand data",
+                            },
+                            {
+                              icon: <BookOpen className="h-5 w-5" />,
+                              text: "Access personalized learning resources and roadmaps",
+                            },
+                          ].map((item, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{
+                                duration: 0.3,
+                                delay: 0.5 + index * 0.1,
+                              }}
+                              className="flex items-start"
+                            >
+                              <div className="flex-shrink-0 h-6 w-6 rounded-full text-white flex items-center justify-center mr-3">
+                                {item.icon}
+                              </div>
+                              <p className="text-purple-100">{item.text}</p>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    <div className="lg:col-span-2">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="bg-gradient-to-br from-slate-400 to-blue-400 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-xl relative overflow-hidden"
+                      >
+                        <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-slate-200 to-blue-500 rounded-full blur-xl"></div>
+                        <div className="absolute -bottom-10 -left-10 w-20 h-20 bg-gradient-to-br from-slate-200 to-blue-500 rounded-full blur-xl"></div>
+
+                        <div className="text-center">
+                          <motion.div
+                            initial={{ scale: 1 }}
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{
+                              duration: 2,
+                              repeat: Number.POSITIVE_INFINITY,
+                              ease: "easeInOut",
+                            }}
+                            className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-slate-200 to-blue-500 flex items-center justify-center"
+                          >
+                            <Rocket className="h-10 w-10 text-white" />
+                          </motion.div>
+
+                          <h3 className="text-2xl font-bold text-white font-[FKDisplay] mb-4">
+                            Start Your Journey
+                          </h3>
+                          <div className="flex justify-center mb-4">
+                            <img
+                              src="./sonar.svg"
+                              alt="Sonar Logo"
+                              className="w-48 h-auto mb-4"
+                            />
+                          </div>
+                          <Link href="/InputForm">
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="w-full flex items-center justify-center group"
+                            >
+                              <HoverButton>Get Started </HoverButton>
+                              <motion.div
+                                initial={{ x: 0 }}
+                                animate={{ x: [0, 5, 0] }}
+                                transition={{
+                                  duration: 1,
+                                  repeat: Number.POSITIVE_INFINITY,
+                                  repeatType: "reverse",
+                                  ease: "easeInOut",
+                                }}
+                              ></motion.div>
+                            </motion.button>
+                          </Link>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center">
+                    <div className="flex space-x-6">
+                      <div className="flex items-center text-purple-200">
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        <span className="text-sm">AI-Powered</span>
+                      </div>
+                      <div className="flex items-center text-purple-200">
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        <span className="text-sm">Real-time Data</span>
+                      </div>
+                      <div className="flex items-center text-purple-200">
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        <span className="text-sm">Personalized</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-      </section>
+      </footer>
     </div>
   );
 }
