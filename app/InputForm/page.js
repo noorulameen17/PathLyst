@@ -1,25 +1,27 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  User,
-  Briefcase,
-  GraduationCap,
-  RefreshCw,
-  Sparkles,
-  HelpCircle,
-  BookOpen,
-  Code,
-  Lightbulb,
-  Info,
-} from "lucide-react";
+import AiButton from "@/components/ui/Button/aiButton";
+import { ShimmerButton } from "@/components/ui/Button/shimmer-button";
+import { FlickeringGrid } from "@/components/ui/flickering-grid";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
-import { generatePrompt } from "@/utils/generatePrompt";
-import { DotStream } from "ldrs/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { DotWave } from "ldrs/react"; // Add this import
 import "ldrs/react/DotStream.css";
+import "ldrs/react/DotWave.css";
+import {
+  BookOpen,
+  Briefcase,
+  Code,
+  GraduationCap,
+  HelpCircle,
+  Info,
+  Lightbulb,
+  RefreshCw,
+  User,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 export default function CareerDashboard() {
   const [activeStep, setActiveStep] = useState(0);
@@ -33,6 +35,7 @@ export default function CareerDashboard() {
   const [validationMsg, setValidationMsg] = useState("");
   const textareaRef = useRef(null);
   const router = useRouter();
+  const [showLoader, setShowLoader] = useState(false); // Add loader state
 
   const steps = [
     { id: 0, name: "Background", icon: <BookOpen className="w-5 h-5" /> },
@@ -152,7 +155,12 @@ export default function CareerDashboard() {
 
   const handleGenerate = async () => {
     // Validation: all fields required
-    if (!background.trim() || !skills.trim() || !interests.trim() || !question.trim()) {
+    if (
+      !background.trim() ||
+      !skills.trim() ||
+      !interests.trim() ||
+      !question.trim()
+    ) {
       setValidationMsg("Please fill in all fields before generating insights.");
       return;
     }
@@ -215,22 +223,31 @@ export default function CareerDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4 relative">
+      {/* FlickeringGrid fills entire background */}
+      <FlickeringGrid
+        className="fixed inset-0 z-0 pointer-events-none"
+        squareSize={4}
+        gridGap={6}
+        color="#60A5FA"
+        maxOpacity={0.5}
+        flickerChance={0.1}
+      />
+      {/* Loader Overlay */}
+      {showLoader && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-white/80">
+          <DotWave size={64} speed={1} color="black" />
+        </div>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden relative z-10"
       >
-        <div className="p-6 pb-0">
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-2xl font-bold text-center text-slate-800"
-          >
-            Career Planning Dashboard
-          </motion.h1>
+        {/* Responsive Logo at the Top */}
+        <div className="w-full font-bold text-3xl font-[FKDisplay] flex justify-center p-1 -mb-1 mt-4">
+          <h1>PathLyst</h1>
         </div>
-
         {/* Progress Steps */}
         <div className="px-6 pt-4">
           <div className="relative flex items-center justify-between">
@@ -241,7 +258,7 @@ export default function CareerDashboard() {
                   whileTap={{ scale: 0.95 }}
                   className={`w-10 h-10 rounded-full flex items-center justify-center ${
                     activeStep >= step.id
-                      ? "bg-blue-500 text-white"
+                      ? "bg-teal-800 text-white"
                       : "bg-slate-100 text-slate-400"
                   } transition-colors duration-300`}
                 >
@@ -250,7 +267,7 @@ export default function CareerDashboard() {
                 <span
                   className={`text-xs mt-1 ${
                     activeStep >= step.id
-                      ? "text-blue-500 font-medium"
+                      ? "text-teal-800 font-medium"
                       : "text-slate-400"
                   }`}
                 >
@@ -266,7 +283,7 @@ export default function CareerDashboard() {
                 animate={{
                   width: `${(activeStep / (steps.length - 1)) * 100}%`,
                 }}
-                className="h-full bg-blue-500"
+                className="h-full bg-teal-800"
                 transition={{ duration: 0.3 }}
               />
             </div>
@@ -274,7 +291,6 @@ export default function CareerDashboard() {
         </div>
 
         <div className="p-6">
-         
           {/* Validation Popup */}
           <AnimatePresence>
             {validationMsg && (
@@ -325,7 +341,7 @@ export default function CareerDashboard() {
                         }}
                         className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
                           userType === type.id
-                            ? "border-blue-500 bg-blue-50 text-blue-700"
+                            ? "border-teal-800 bg-teal-50 text-teal-800"
                             : "border-slate-200 hover:border-slate-300 text-slate-700"
                         }`}
                       >
@@ -353,7 +369,7 @@ export default function CareerDashboard() {
                     value={background}
                     onChange={stepFields[0].onChange}
                     placeholder={stepFields[0].placeholder}
-                    className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-blue-500 focus:ring-0 focus:outline-none transition-all"
+                    className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-teal-800 focus:ring-0 focus:outline-none transition-all"
                   />
                   <div className="text-xs text-slate-500 italic">
                     Example: "{stepFields[0].example}"
@@ -383,7 +399,7 @@ export default function CareerDashboard() {
                     value={stepFields[activeStep].value}
                     onChange={stepFields[activeStep].onChange}
                     placeholder={stepFields[activeStep].placeholder}
-                    className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-blue-500 focus:ring-0 focus:outline-none transition-all"
+                    className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-teal-800 focus:ring-0 focus:outline-none transition-all"
                   />
                   <div className="text-xs text-slate-500 italic">
                     Example: "{stepFields[activeStep].example}"
@@ -413,7 +429,7 @@ export default function CareerDashboard() {
                     value={question}
                     onChange={stepFields[3].onChange}
                     placeholder={stepFields[3].placeholder}
-                    className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-blue-500 focus:ring-0 focus:outline-none transition-all"
+                    className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-teal-800 focus:ring-0 focus:outline-none transition-all"
                   />
                   <div className="text-xs text-slate-500 italic">
                     Example: "{stepFields[3].example}"
@@ -423,52 +439,12 @@ export default function CareerDashboard() {
                     {stepFields[3].tip}
                   </div>
                 </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                {/* Replace button with AiButton */}
+                <AiButton
                   onClick={handleGenerate}
                   disabled={isGenerating}
-                  className="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-70"
-                >
-                  {isGenerating ? (
-                    <>
-                      <DotStream size={32} speed={2.5} color="white" />
-                      <span>Generating Insights...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4" />
-                      <span>Generate Career Insights</span>
-                    </>
-                  )}
-                </motion.button>
-
-                {showPreview && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-4"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4 text-blue-500" />
-                        <h3 className="text-sm font-medium text-slate-700">
-                          Live Prompt Preview:
-                        </h3>
-                      </div>
-                      <button
-                        onClick={() => setShowPreview(false)}
-                        className="text-xs text-blue-500 hover:text-blue-700"
-                      >
-                        Hide Prompt Preview
-                      </button>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700 whitespace-pre-line">
-                      {generatePrompt({ background, skills, interests, question })}
-                    </div>
-                  </motion.div>
-                )}
+                  isLoading={isGenerating}
+                />
               </motion.div>
             )}
           </AnimatePresence>
@@ -504,6 +480,21 @@ export default function CareerDashboard() {
               <div className="button-bottom"></div>
               <div className="button-base"></div>
             </button>
+          </div>
+          {/* Add ShinyButton as Back to Home */}
+          <div className="flex justify-center mt-8">
+            <ShimmerButton
+              onClick={() => {
+                setShowLoader(true);
+                setTimeout(() => {
+                  setShowLoader(false);
+                  router.push("/");
+                }, 1200); // show loader for 1.2s before navigating
+              }}
+              className="bg-slate-300 hover:bg-slate-500 text-white transition-all duration-300"
+            >
+              Back to Home
+            </ShimmerButton>
           </div>
         </div>
       </motion.div>
