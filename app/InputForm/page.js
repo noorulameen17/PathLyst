@@ -372,7 +372,7 @@ export default function CareerDashboard() {
                     className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-teal-800 focus:ring-0 focus:outline-none transition-all"
                   />
                   <div className="text-xs text-slate-500 italic">
-                    Example: "{stepFields[0].example}"
+                    Example: &quot;{stepFields[0].example}&quot;
                   </div>
                   <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
                     <Info className="w-3 h-3" />
@@ -402,7 +402,7 @@ export default function CareerDashboard() {
                     className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-teal-800 focus:ring-0 focus:outline-none transition-all"
                   />
                   <div className="text-xs text-slate-500 italic">
-                    Example: "{stepFields[activeStep].example}"
+                    Example: &quot;{stepFields[activeStep].example}&quot;
                   </div>
                   <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
                     <Info className="w-3 h-3" />
@@ -432,7 +432,7 @@ export default function CareerDashboard() {
                     className="w-full p-3 text-sm border-2 border-slate-200 rounded-lg focus:border-teal-800 focus:ring-0 focus:outline-none transition-all"
                   />
                   <div className="text-xs text-slate-500 italic">
-                    Example: "{stepFields[3].example}"
+                    Example: &quot;{stepFields[3].example}&quot;
                   </div>
                   <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
                     <Info className="w-3 h-3" />

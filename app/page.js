@@ -31,6 +31,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DotWave } from 'ldrs/react';
 import 'ldrs/react/DotWave.css';
+import Image from "next/image";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -164,9 +165,11 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
-                <img
-                  src="./logo.svg"
+                <Image
+                  src="/logo.svg"
                   alt="Sonar Logo"
+                  width={120}
+                  height={42}
                   className="h-42 w-auto -ml-4 md:ml-0 lg:-ml-4 xl:-ml-10"
                 />
               </div>
@@ -199,7 +202,7 @@ export default function LandingPage() {
                   onClick={(e) => handleScrollToSection(e, "audience")}
                   className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors md:text-xs lg:text-base md:px-1 lg:px-4 md:py-0 lg:py-2"
                 >
-                  Who It's For
+                  Who It&apos;s For
                 </a>
                 <div className="md:py-0 md:px-1 md:text-xs lg:py-2 lg:px-4 lg:text-base">
                   <HoverButton
@@ -279,7 +282,7 @@ export default function LandingPage() {
                     }}
                     className="text-slate-600 hover:text-teal-600 transition-colors"
                   >
-                    Who It's For
+                    Who It&apos;s For
                   </a>
                 </div>
               </motion.div>
@@ -361,21 +364,27 @@ export default function LandingPage() {
                 </AnimatePresence>
               </div>
               <div className="lg:w-1/2 flex flex-col items-center">
-                <img
-                  src="./sonar.svg"
+                <Image
+                  src="/sonar.svg"
                   alt="Sonar Logo"
+                  width={272}
+                  height={120}
                   className="w-68 h-auto mb-4"
                 />
                 <div className="flex items-center">
-                  <img
-                    src="./perplexity.svg"
+                  <Image
+                    src="/perplexity.svg"
                     alt="Perplexity Logo"
+                    width={96}
+                    height={40}
                     className="w-24 h-auto"
                   />
                   <X className="h-6 w-6 text-slate-800 translate-x-1 mx-6" />
-                  <img
-                    src="./perp logo.png"
+                  <Image
+                    src="/perp logo.png"
                     alt="Perplexity Logo"
+                    width={96}
+                    height={40}
                     className="w-24 h-auto"
                   />
                 </div>
@@ -496,7 +505,7 @@ export default function LandingPage() {
                         Ask About Any Career
                       </h3>
                       <p className="text-slate-600 mb-4">
-                        Type in your career question, whether it's about a
+                        Type in your career question, whether it&apos;s about a
                         specific role, industry, or career path.
                       </p>
                       <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
@@ -518,7 +527,7 @@ export default function LandingPage() {
                         AI Processes Your Query
                       </h3>
                       <p className="text-slate-600 mb-4">
-                        Perplexity's Sonar-Pro model analyzes your question and
+                        Perplexity&apos;s Sonar-Pro model analyzes your question and
                         searches for the most relevant, up-to-date information.
                       </p>
                       <div className="flex justify-center">
@@ -601,7 +610,7 @@ export default function LandingPage() {
                       Why PathLyst Slaps
                     </h2>
                     <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
-                      Career research that's actually helpful, not overwhelming.
+                      Career research that&apos;s actually helpful, not overwhelming.
                     </p>
                   </motion.div>
 
@@ -717,7 +726,7 @@ export default function LandingPage() {
             ease: "linear",
           }}
         >
-          <img src="./Star1.svg" alt="Perplexity Logo" className="w-24 h-24" />
+          <Image src="/Star1.svg" alt="Perplexity Logo" width={96} height={96} className="w-24 h-24" />
         </motion.div>
 
         {/* Rotating Star */}
@@ -731,7 +740,7 @@ export default function LandingPage() {
             ease: "linear",
           }}
         >
-          <img src="./Star1.svg" alt="Perplexity Logo" className="w-24 h-24" />
+          <Image src="/Star1.svg" alt="Perplexity Logo" width={96} height={96} className="w-24 h-24" />
         </motion.div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -828,9 +837,11 @@ export default function LandingPage() {
                             Start Your Journey
                           </h3>
                           <div className="flex justify-center mb-4">
-                            <img
-                              src="./sonar.svg"
+                            <Image
+                              src="/sonar.svg"
                               alt="Sonar Logo"
+                              width={192}
+                              height={80}
                               className="w-48 h-auto mb-4"
                             />
                           </div>
