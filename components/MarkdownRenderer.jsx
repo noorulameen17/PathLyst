@@ -24,7 +24,7 @@ const headingIcons = {
   "Useful Resources": <Rocket className="inline w-5 h-5 mr-2 text-teal-700" />,
 };
 
-// Always return an icon, fallback to Info
+// Always return an icon, fallback to Info 
 function getHeadingIcon(children) {
   // Flatten children to string
   const flatten = (child) => {
