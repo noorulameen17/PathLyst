@@ -27,8 +27,10 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { DotWave } from 'ldrs/react';
+import 'ldrs/react/DotWave.css';
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,6 +43,15 @@ export default function LandingPage() {
     audience: false,
     cta: false,
   });
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  // Smooth scroll handler
+  const handleScrollToSection = (e, sectionId) => {
+    e.preventDefault();
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -142,6 +153,11 @@ export default function LandingPage() {
 
   return (
     <div>
+      {loading && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/80">
+          <DotWave size={64} speed={1} color="black" />
+        </div>
+      )}
       <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-teal-100">
@@ -159,30 +175,41 @@ export default function LandingPage() {
               <div className="hidden md:flex items-center md:space-x-3 lg:space-x-8">
                 <a
                   href="#features"
+                  onClick={(e) => handleScrollToSection(e, "features")}
                   className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors md:text-xs lg:text-base md:px-1 lg:px-4 md:py-0 lg:py-2"
                 >
                   Features
                 </a>
                 <a
                   href="#how"
+                  onClick={(e) => handleScrollToSection(e, "how")}
                   className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors md:text-xs lg:text-base md:px-1 lg:px-4 md:py-0 lg:py-2"
                 >
                   How It Works
                 </a>
                 <a
                   href="#benefits"
+                  onClick={(e) => handleScrollToSection(e, "benefits")}
                   className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors md:text-xs lg:text-base md:px-1 lg:px-4 md:py-0 lg:py-2"
                 >
                   Benefits
                 </a>
                 <a
                   href="#audience"
+                  onClick={(e) => handleScrollToSection(e, "audience")}
                   className="text-slate-600 font-[FKDisplay] hover:text-teal-600 transition-colors md:text-xs lg:text-base md:px-1 lg:px-4 md:py-0 lg:py-2"
                 >
                   Who It's For
                 </a>
                 <div className="md:py-0 md:px-1 md:text-xs lg:py-2 lg:px-4 lg:text-base">
-                  <HoverButton className="md:px-2 md:py-0 md:text-xs lg:px-6 lg:py-2 lg:text-base">
+                  <HoverButton
+                    type="button"
+                    onClick={() => {
+                      setLoading(true);
+                      router.push("/InputForm");
+                    }}
+                    className="md:px-2 md:py-0 md:text-xs lg:px-6 lg:py-2 lg:text-base"
+                  >
                     Get Started
                   </HoverButton>
                 </div>
@@ -216,28 +243,40 @@ export default function LandingPage() {
                 <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
                   <a
                     href="#features"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      handleScrollToSection(e, "features");
+                      setIsMenuOpen(false);
+                    }}
                     className="text-slate-600 hover:text-teal-600 transition-colors"
                   >
                     Features
                   </a>
                   <a
                     href="#how"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      handleScrollToSection(e, "how");
+                      setIsMenuOpen(false);
+                    }}
                     className="text-slate-600 hover:text-teal-600 transition-colors"
                   >
                     How It Works
                   </a>
                   <a
                     href="#benefits"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      handleScrollToSection(e, "benefits");
+                      setIsMenuOpen(false);
+                    }}
                     className="text-slate-600 hover:text-teal-600 transition-colors"
                   >
                     Benefits
                   </a>
                   <a
                     href="#audience"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      handleScrollToSection(e, "audience");
+                      setIsMenuOpen(false);
+                    }}
                     className="text-slate-600 hover:text-teal-600 transition-colors"
                   >
                     Who It's For
@@ -288,20 +327,34 @@ export default function LandingPage() {
                         transition={{ duration: 0.5, delay: 0.3 }}
                         className="mt-8 flex flex-col sm:flex-row gap-4"
                       >
-                        <motion.button
+                        <motion.div
                           whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.97 }}
                           className="flex items-center text-lg font-medium justify-center "
                         >
-                          <HoverButton>Get Started</HoverButton>{" "}
-                        </motion.button>
-                        <motion.button
+                          <HoverButton
+                            type="button"
+                            onClick={() => {
+                              setLoading(true);
+                              router.push("/InputForm");
+                            }}
+                          >
+                            Get Started
+                          </HoverButton>
+                        </motion.div>
+                        <motion.div
                           whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.97 }}
                           className="flex items-center justify-center text-lg font-medium"
                         >
-                          <HoverButton>Learn More</HoverButton>
-                        </motion.button>
+                          <HoverButton
+                            type="button"
+                            onClick={(e) => handleScrollToSection(e, "features")}
+                            style={{ cursor: "pointer" }}
+                          >
+                            Learn More
+                          </HoverButton>
+                        </motion.div>
                       </motion.div>
                     </>
                   )}
@@ -347,7 +400,7 @@ export default function LandingPage() {
                       <span>Comprehensive Career Insights</span>
                     </div>
                     <h2 className="text-3xl font-[FKDisplay] sm:text-4xl font-bold text-slate-900">
-                      What JobStackr Does
+                      What PathLyst Does
                     </h2>
                     <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
                       Your personal career research assistant that breaks down
@@ -545,7 +598,7 @@ export default function LandingPage() {
                       <span>Why Users Love Us</span>
                     </div>
                     <h2 className="text-3xl font-[FKDisplay] sm:text-4xl font-bold text-slate-900">
-                      Why JobStackr Slaps
+                      Why PathLyst Slaps
                     </h2>
                     <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
                       Career research that's actually helpful, not overwhelming.
@@ -609,7 +662,7 @@ export default function LandingPage() {
                       Perfect For
                     </h2>
                     <p className="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
-                      JobStackr helps anyone looking to make informed career
+                      PathLyst helps anyone looking to make informed career
                       decisions.
                     </p>
                   </motion.div>
@@ -781,11 +834,17 @@ export default function LandingPage() {
                               className="w-48 h-auto mb-4"
                             />
                           </div>
-                          <Link href="/InputForm">
-                            <div className="w-full flex items-center justify-center group">
-                              <HoverButton>Get Started </HoverButton>
-                            </div>
-                          </Link>
+                          <div className="w-full flex items-center justify-center group">
+                            <HoverButton
+                              type="button"
+                              onClick={() => {
+                                setLoading(true);
+                                router.push("/InputForm");
+                              }}
+                            >
+                              Get Started
+                            </HoverButton>
+                          </div>
                         </div>
                       </motion.div>
                     </div>

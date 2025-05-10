@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import PerplexityResponse from "@/components/PerplexityResponse";
 import Loader from "@/components/Loader";
+import PerplexityResponse from "@/components/PerplexityResponse";
+import { ShimmerButton } from "@/components/ui/Button/shimmer-button";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { DotWave } from "ldrs/react"; // Add this import
+import "ldrs/react/DotWave.css";
 
 export default function ResultPage() {
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showLoader, setShowLoader] = useState(false); // Add loader state
   const router = useRouter();
 
   useEffect(() => {
@@ -36,13 +40,24 @@ export default function ResultPage() {
 
   return (
     <div className="max-w-3xl mx-auto my-10">
+      {/* Loader Overlay */}
+      {showLoader && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-white/80">
+          <DotWave size={64} speed={1} color="black" />
+        </div>
+      )}
       {/* Back Button */}
-      <button
-        onClick={() => router.push("/dashboard")}
-        className="mb-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      <ShimmerButton
+        onClick={() => {
+          setShowLoader(true);
+          setTimeout(() => {
+            setShowLoader(false);
+            router.push("/InputForm");
+          }, 1200);
+        }}
       >
-        ← Back
-      </button>
+        Back
+      </ShimmerButton>
       <PerplexityResponse
         text={responseData.text}
         citations={responseData.citations}
