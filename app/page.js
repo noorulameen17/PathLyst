@@ -510,8 +510,8 @@ export default function LandingPage() {
                       </p>
                       <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
                         <p className="text-slate-700 text-sm italic">
-                          "What does a Data Scientist do and what skills do I
-                          need?"
+                          &quot;What does a Data Scientist do and what skills do I
+                          need?&quot;
                         </p>
                       </div>
                     </motion.div>
