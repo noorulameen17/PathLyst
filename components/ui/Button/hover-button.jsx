@@ -1,7 +1,11 @@
-
-export default function HoverButton({ children }) {
+export default function HoverButton({ children, onClick, type = "button", className = "", ...props }) {
   return (
-    <button className="group flex h-10 items-center gap-2 rounded-full bg-neutral-200 pl-3 pr-4 transition-all duration-300 ease-in-out hover:bg-black hover:pl-2 hover:text-white active:bg-neutral-700">
+    <button
+      type={type}
+      onClick={onClick}
+      className={`group flex h-10 items-center gap-2 rounded-full bg-neutral-200 pl-3 pr-4 transition-all duration-300 ease-in-out hover:bg-black hover:pl-2 hover:text-white active:bg-neutral-700 ${className}`}
+      {...props}
+    >
       <span className="rounded-full bg-black p-1 text-sm transition-colors duration-300 group-hover:bg-white">
         <svg
           stroke="currentColor"
@@ -19,7 +23,7 @@ export default function HoverButton({ children }) {
           <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
       </span>
-      <span>{children}</span>
+      {children}
     </button>
   );
 }

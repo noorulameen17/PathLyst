@@ -15,7 +15,7 @@ const options = {
       },
     },
     color: {
-      value: ["#7c3aed", "#bae6fd", "#a78bfa", "#93c5fd", "#0284c7", "#fafafa", "#38bdf8"],
+      value: ["#0000ff", "#bae6fd", "#a78bfa", "#93c5fd", "#0284c7", "#fafafa", "#38bdf8"],
     },
     shape: {
       type: "star",
@@ -125,7 +125,7 @@ export default function AiButton({ onClick, disabled, isLoading }) {
 
   return (
     <button
-      className="group relative my-8 rounded-full bg-gradient-to-r from-blue-300/30 via-blue-500/30 via-40% to-purple-500/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 w-full"
+      className="group relative my-8 rounded-full bg-gradient-to-br from-slate-200 to-blue-500 p-1 text-white transition-transform hover:scale-110 active:scale-105 w-full"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onClick={onClick}
@@ -133,10 +133,10 @@ export default function AiButton({ onClick, disabled, isLoading }) {
       type="button"
       style={{ opacity: disabled ? 0.7 : 1, pointerEvents: disabled ? "none" : "auto" }}
     >
-      <div className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-300 via-blue-500 via-40% to-purple-500 px-4 py-2 text-white min-h-[44px]">
+      <div className="relative font-[FKDisplay] flex items-center justify-center gap-2 rounded-full bg-gradient-to-br from-slate-200 to-blue-500 px-4 py-2 text-white min-h-[44px]">
         {isLoading ? (
           <>
-            <DotStream size={32} speed={2.5} color="white" />
+            <DotStream size={32} speed={2.5} color="blue" />
             <span>Generating Insights...</span>
           </>
         ) : (
