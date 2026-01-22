@@ -1,7 +1,5 @@
-import React from 'react';
-import showdown from 'showdown';
-import { FaYoutube, FaTwitter, FaFilePdf, FaLink } from 'react-icons/fa';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { FaFilePdf, FaLink, FaTwitter, FaYoutube } from "react-icons/fa";
+import { TwitterTweetEmbed } from "react-twitter-embed";
 import MarkdownRenderer from "./MarkdownRenderer";
 
 function getYouTubeId(url) {
@@ -14,19 +12,27 @@ function getTweetId(url) {
   return match ? match[1] : null;
 }
 
-function renderCitation(cite) {
-  const { url, title, snippet } = cite;
-  const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
-  const isTweet = url.includes('twitter.com');
-  const isPDF = url.endsWith('.pdf');
+function renderCitation(cite, index) {
+  const normalized = typeof cite === "string" ? { url: cite } : cite || {};
+  const { url, title, snippet } = normalized;
+  if (!url) return null;
+
+  const isYouTube = url?.includes("youtube.com") || url?.includes("youtu.be");
+  const isTweet = url?.includes("twitter.com");
+  const isPDF = url?.toLowerCase().endsWith(".pdf");
 
   return (
-    <div key={url} className="my-4 p-4 rounded-xl border bg-white shadow-sm space-y-3">
+    <div
+      key={url || `cite-${index}`}
+      className="my-4 p-4 rounded-xl border bg-white shadow-sm space-y-3"
+    >
       <div className="flex items-center gap-2 font-semibold text-lg">
         {isYouTube && <FaYoutube className="text-red-600" />}
         {isTweet && <FaTwitter className="text-blue-500" />}
         {isPDF && <FaFilePdf className="text-rose-500" />}
-        {!isYouTube && !isTweet && !isPDF && <FaLink className="text-gray-400" />}
+        {!isYouTube && !isTweet && !isPDF && (
+          <FaLink className="text-gray-400" />
+        )}
         <a
           href={url}
           target="_blank"
@@ -49,7 +55,9 @@ function renderCitation(cite) {
       )}
       {isPDF && (
         <iframe
-          src={`https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`}
+          src={`https://docs.google.com/gview?url=${encodeURIComponent(
+            url
+          )}&embedded=true`}
           className="w-full h-[500px] rounded-md border"
           title="PDF Viewer"
         />
@@ -58,12 +66,15 @@ function renderCitation(cite) {
   );
 }
 
-export default function PerplexityResponse({ text, citations = [], toolOutputs = [] }) {
+export default function PerplexityResponse({
+  text,
+  citations = [],
+  toolOutputs = [],
+}) {
   return (
     <div className="p-4 bg-white rounded-2xl shadow-lg space-y-6">
       {/* AI Response */}
       <div>
-        
         <MarkdownRenderer content={text} />
       </div>
 
@@ -71,16 +82,16 @@ export default function PerplexityResponse({ text, citations = [], toolOutputs =
       {citations.length > 0 && (
         <div>
           <h3 className="text-lg font-medium text-gray-800 mt-4">📚 Sources</h3>
-          <div>
-            {citations.map((cite) => renderCitation(cite))}
-          </div>
+          <div>{citations.map((cite, idx) => renderCitation(cite, idx))}</div>
         </div>
       )}
 
       {/* Tool Outputs */}
       {toolOutputs.length > 0 && (
         <div>
-          <h3 className="text-lg font-medium text-gray-800 mt-4">🛠 Tool Outputs</h3>
+          <h3 className="text-lg font-medium text-gray-800 mt-4">
+            🛠 Tool Outputs
+          </h3>
           <div className="bg-gray-100 p-3 rounded-md text-sm text-gray-700">
             <pre>{JSON.stringify(toolOutputs, null, 2)}</pre>
           </div>

@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "PathLyst",
-  description: "PathLyst helps you discover and manage your career opportunities. Find jobs, track applications, and optimize your job search.",
+  description:
+    "PathLyst helps you discover and manage your career opportunities. Find jobs, track applications, and optimize your job search.",
   keywords: [
     "job search",
     "career",
@@ -22,14 +23,14 @@ export const metadata = {
     "PathLyst",
     "job applications",
     "employment",
-    "job board"
+    "job board",
   ],
   author: "PathLyst Team",
   viewport: "width=device-width, initial-scale=1",
   openGraph: {
     title: "PathLyst",
     description: "Discover and manage your career opportunities with PathLyst.",
-    url: "https://pathlyst.com",
+    url: "https://path-lyst.vercel.app/",
     siteName: "PathLyst",
     type: "website",
     images: [
@@ -37,17 +38,17 @@ export const metadata = {
         url: "https://pathlyst.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "PathLyst Logo"
-      }
-    ]
+        alt: "PathLyst Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "PathLyst",
     description: "Discover and manage your career opportunities with PathLyst.",
     site: "@pathlyst",
-    images: ["https://pathlyst.com/og-image.png"]
-  }
+    images: ["https://pathlyst.com/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
